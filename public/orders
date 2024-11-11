@@ -1,0 +1,46 @@
+import { Pool } from 'pg';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// PostgreSQL接続プールの設定
+const pool = new Pool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+});
+
+// 注文データの取得API
+export const getOrders = async (req, res) => {
+    if (req.method === 'GET') {
+        try {
+            const result = await pool.query('SELECT * FROM public.orders'); // 注文データを取得
+            res.status(200).json(result.rows); // 注文データをJSON形式で返す
+        } catch (error) {
+            console.error('データ取得エラー:', error);
+            res.status(500).json({ error: 'データの取得に失敗しました' });
+        }
+    } else {
+        res.setHeader('Allow', ['GET']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+};
+
+// 価格設定データの取得API
+export const getPriceSettings = async (req, res) => {
+    if (req.method === 'GET') {
+        try {
+            const result = await pool.query('SELECT * FROM public.pricessetting'); // 価格設定データを取得
+            res.status(200).json(result.rows); // 価格設定データをJSON形式で返す
+        } catch (error) {
+            console.error('データ取得エラー:', error);
+            res.status(500).json({ error: 'データの取得に失敗しました' });
+        }
+    } else {
+        res.setHeader('Allow', ['GET']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+};
+
