@@ -1,3 +1,4 @@
+
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -14,7 +15,7 @@ const port = 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [''],
+    origin: ['http://192.168.2.122:8080', 'http://192.168.2.129:8080', 'http://localhost:8080'],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true
   }
@@ -32,7 +33,7 @@ const pool = new Pool({
 // CORS設定
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [''];
+    const allowedOrigins = ['http://192.168.2.122:8080', 'http://192.168.2.129:8080', 'http://localhost:8080'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -103,23 +104,13 @@ app.get('/api/orders/:id', async (req, res) => {
 // 注文の状態を更新するエンドポイント
 app.patch('/api/orders/:id', async (req, res) => {
   const orderId = req.params.id;
-  const { status, pass_date, order_number, takoyaki_quantity, dessert_takoyaki_quantity, takoyaki_price, dessert_takoyaki_price, order_date } = req.body;
+  const { status, pass_date } = req.body;
+  const updatedPassDate = pass_date || new Date().toISOString();
 
   try {
-    // 注文情報の更新
     const result = await pool.query(
-      'UPDATE orders SET order_number = $1, takoyaki_quantity = $2, takoyaki_price = $3, dessert_takoyaki_quantity = $4, dessert_takoyaki_price = $5, order_date = $6, status = $7, pass_date = $8 WHERE id = $9 RETURNING *',
-      [
-        order_number, 
-        takoyaki_quantity, 
-        takoyaki_price,  // 価格を直接設定
-        dessert_takoyaki_quantity, 
-        dessert_takoyaki_price, // 価格を直接設定
-        order_date, 
-        status, 
-        pass_date || new Date().toISOString(), 
-        orderId
-      ]
+      'UPDATE orders SET status = $1, pass_date = $2 WHERE id = $3 RETURNING *',
+      [status, updatedPassDate, orderId]
     );
 
     if (result.rowCount === 0) {
@@ -129,8 +120,8 @@ app.patch('/api/orders/:id', async (req, res) => {
     res.status(200).json(result.rows[0]);
     io.emit('orderUpdated', result.rows[0]); // 注文更新イベントを送信
   } catch (error) {
-    console.error('注文更新エラー:', error);
-    res.status(500).json({ error: '注文の更新に失敗しました' });
+    console.error('Error updating order status:', error);
+    res.status(500).json({ error: '注文の状態更新に失敗しました' });
   }
 });
 
@@ -162,7 +153,32 @@ app.get('/api/pricesettings', async (req, res) => {
   }
 });
 
+// 価格設定を更新するエンドポイント
+app.patch('/api/pricesettings', async (req, res) => {
+  const { takoyaki_price, dessert_takoyaki_price } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE public.pricesettings SET takoyaki_price = $1, dessert_takoyaki_price = $2 RETURNING *',
+      [takoyaki_price, dessert_takoyaki_price]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: '価格設定が見つかりませんでした' });
+    }
+
+    res.status(200).json(result.rows[0]);
+    io.emit('priceUpdated', result.rows[0]); // 価格更新イベントを送信
+  } catch (error) {
+    console.error('価格更新エラー:', error);
+    res.status(500).json({ error: '価格の更新に失敗しました' });
+  }
+});
+
+
+
+
 // サーバーの起動
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
