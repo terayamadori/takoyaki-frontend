@@ -1,20 +1,20 @@
 // plugins/socket.js
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 export default (context, inject) => {
-  const socket = io(process.env.SOCKET_URL || 'https://takoyakiapp.fly.dev');
+  const socket = io(process.env.SOCKET_URL || process.env.HOST_URL);
 
   // 注文が更新されたときにリアルタイムでデータを再取得
-  socket.on('orderUpdated', (orders) => {
+  socket.on("orderUpdated", (orders) => {
     // Vuex ストアのミューテーションをコミットして注文データを更新
-    context.store.commit('orders/SET_ORDERS', orders);
+    context.store.commit("orders/SET_ORDERS", orders);
   });
 
   // 他のイベントも必要に応じてハンドリング可能
   // 例: 新しい注文が追加されたとき
-  socket.on('newOrder', (order) => {
-    context.store.commit('orders/ADD_ORDER', order);
+  socket.on("newOrder", (order) => {
+    context.store.commit("orders/ADD_ORDER", order);
   });
 
-  inject('socket', socket);
+  inject("socket", socket);
 };

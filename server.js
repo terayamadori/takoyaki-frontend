@@ -1,35 +1,36 @@
-
 // server.js
-const express = require('express');
-const cors = require('cors'); // CORSミドルウェアのインポート
-const ordersRouter = require('./orders');
+const express = require("express");
+const cors = require("cors"); // CORSミドルウェアのインポート
+const ordersRouter = require("./orders");
 
 const app = express();
 
 // CORSの設定（特定のオリジンのみを許可）
-const allowedOrigins = ['https://takoyakiapp.fly.dev', 'https://yourfrontenddomain.com']; // 許可するオリジンを設定
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+const allowedOrigins = [process.env.HOST_URL, "https://yourfrontenddomain.com"]; // 許可するオリジンを設定
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // JSONボディの解析ミドルウェア（express 4.16+ では body-parser は不要）
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ordersRouterのルーティング設定
-app.use('/api', ordersRouter);
+app.use("/api", ordersRouter);
 
 // 404エラーハンドリング
 app.use((req, res) => {
-  res.status(404).json({ error: 'API endpoint not found' });
+  res.status(404).json({ error: "API endpoint not found" });
 });
 
 // サーバーレベルのエラーハンドリング
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong on the server' });
+  res.status(500).json({ error: "Something went wrong on the server" });
 });
 
 // ポート番号の設定
