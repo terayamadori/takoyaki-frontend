@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for my-nuxt-app on 2024-11-13T20:05:56+09:00
+# fly.toml app configuration file generated for takoyakiapp on 2024-11-13T10:35:36Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'my-nuxt-app'
+app = 'takoyakiapp'
 primary_region = 'hkg'
 
 [build]
@@ -20,3 +20,4 @@ primary_region = 'hkg'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 1024
