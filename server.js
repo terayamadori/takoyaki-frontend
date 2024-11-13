@@ -7,7 +7,7 @@ const ordersRouter = require('./orders');
 const app = express();
 
 // CORSの設定（特定のオリジンのみを許可）
-const allowedOrigins = ['http://localhost:8080', 'https://yourfrontenddomain.com']; // 許可するオリジンを設定
+const allowedOrigins = ['https://takoyakiapp.fly.dev', 'https://yourfrontenddomain.com']; // 許可するオリジンを設定
 app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],

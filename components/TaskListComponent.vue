@@ -55,7 +55,7 @@ export default {
       }
     },
     initializeSocket() {
-      const socket = io('http://localhost:3000');
+      const socket = io('https://takoyakiapp.fly.dev');
 
       socket.on('orderUpdated', updatedOrder => {
         const index = this.orders.findIndex(order => order.id === updatedOrder.id);

@@ -15,7 +15,7 @@ const port = 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://192.168.2.122:8080', 'http://192.168.2.129:8080', 'http://localhost:8080'],
+    origin: ['https://takoyakiapp.fly.dev'],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true
   }
@@ -33,7 +33,7 @@ const pool = new Pool({
 // CORS設定
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = ['http://192.168.2.122:8080', 'http://192.168.2.129:8080', 'http://localhost:8080'];
+    const allowedOrigins = ['https://takoyakiapp.fly.dev'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {

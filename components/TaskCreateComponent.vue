@@ -123,7 +123,7 @@ export default {
   methods: {
     initializeSocket() {
       // Socket.IOサーバーに接続
-      this.socket = io('http://localhost:3000');
+      this.socket = io('https://takoyakiapp.fly.dev');
 
       // 注文が追加された場合
       this.socket.on('orderAdded', (newOrder) => {

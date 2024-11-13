@@ -39,7 +39,7 @@ export default {
 
   // axiosの設定
   axios: {
-    baseURL: process.env.API_URL || 'http://localhost:3000', // バックエンドのAPI URLを指定
+    baseURL: process.env.API_URL || 'https://takoyakiapp.fly.dev', // バックエンドのAPI URLを指定
     credentials: true, // CORS対応でクッキーを含むリクエストを許可する場合
   },
 
@@ -63,7 +63,7 @@ export default {
 
   // 環境変数の設定
   env: {
-    API_URL: process.env.API_URL || 'http://localhost:3000', // APIのURL
-    SOCKET_URL: process.env.SOCKET_URL || 'http://localhost:3000',
+    API_URL: process.env.API_URL || 'https://takoyakiapp.fly.dev', // APIのURL
+    SOCKET_URL: process.env.SOCKET_URL || 'https://takoyakiapp.fly.dev',
   },
 }

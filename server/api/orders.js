@@ -14,7 +14,7 @@ const pool = new Pool({
 
 // CORS設定
 router.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+    origin: 'https://takoyakiapp.fly.dev' || 'https://takoyakiapp.fly.dev',
     credentials: true
 }));
 

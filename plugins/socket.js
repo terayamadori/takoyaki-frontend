@@ -2,7 +2,7 @@
 import io from 'socket.io-client';
 
 export default (context, inject) => {
-  const socket = io(process.env.SOCKET_URL || 'http://localhost:3000');
+  const socket = io(process.env.SOCKET_URL || 'https://takoyakiapp.fly.dev');
 
   // 注文が更新されたときにリアルタイムでデータを再取得
   socket.on('orderUpdated', (orders) => {
