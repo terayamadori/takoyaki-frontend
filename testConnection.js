@@ -3,11 +3,7 @@ const { Pool } = require('pg'); // PostgreSQL用のクライアントをイン�
 
 // 環境変数から接続情報を取得
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT
+  connectionString: process.env.DB_CONNECT_STRING
 });
 
 // データベースに接続してクエリを実行

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
 const cors = require("cors");
@@ -22,11 +23,7 @@ const io = new Server(server, {
 
 // PostgreSQL接続設定
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DB_CONNECT_STRING
 });
 
 // CORS設定

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
 const router = express.Router();
@@ -5,11 +6,7 @@ const cors = require("cors");
 
 // PostgreSQL接続プールの設定
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DB_CONNECT_STRING
 });
 
 // CORS設定
@@ -22,6 +19,7 @@ router.use(
 
 // 注文データの取得API
 router.get("/orders", async (req, res) => {
+
   const { status } = req.query; // クエリパラメータからstatusを取得
   try {
     let query = `

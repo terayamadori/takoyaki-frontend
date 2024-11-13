@@ -97,6 +97,7 @@ fly secrets set DB_USER=[ユーザ名]
 fly secrets set DB_PASSWORD=[パスワード] 
 fly secrets set DB_NAME=[データベース名]
 fly secrets set DB_PORT=[ポート番号]
+fly secrets set DB_CONNECT_STRING=[接続文字列]
 ```
 
 ### SQL

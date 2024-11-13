@@ -14,11 +14,7 @@ config.dev = process.env.NODE_ENV !== "production";
 
 // PostgreSQL接続プールの初期化
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DB_CONNECT_STRING
 });
 
 // PostgreSQL接続テスト
@@ -104,6 +100,7 @@ async function start() {
   app.get("/api/test", async (req, res) => {
     try {
       const result = await pool.query("SELECT NOW()");
+      console.log(result)
       res.json(result.rows);
     } catch (err) {
       console.error("Database query error", err.stack);
