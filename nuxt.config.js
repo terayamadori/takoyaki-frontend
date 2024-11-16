@@ -4,9 +4,9 @@ export default {
 
   // ページヘッダーの設定
   head: {
-    title: "my-nuxt-app",
+    title: "たこ焼き",
     htmlAttrs: {
-      lang: "en",
+      lang: "ja",
     },
     meta: [
       { charset: "utf-8" },
@@ -37,7 +37,7 @@ export default {
 
   // axiosの設定
   axios: {
-    baseURL: process.env.API_URL || process.env.HOST_URL, // バックエンドのAPI URLを指定
+    baseURL: "https://takoyaki-back.fly.dev", // バックエンドのAPI URLを指定
     credentials: true, // CORS対応でクッキーを含むリクエストを許可する場合
   },
 
@@ -59,7 +59,7 @@ export default {
 
   // 環境変数の設定
   env: {
-    API_URL: process.env.API_URL || "localhost:3000", // APIのURL
-    SOCKET_URL: process.env.SOCKET_URL || "localhost:3000",
+    API_URL: process.env.API_URL || "https://takoyaki-back.fly.dev", // APIのURL
+    SOCKET_URL: process.env.SOCKET_URL || "wss://takoyaki-back.fly.dev",
   },
 };

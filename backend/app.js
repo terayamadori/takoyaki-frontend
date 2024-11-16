@@ -9,13 +9,13 @@ const { Server } = require("socket.io");
 dotenv.config(); // 環境変数の読み込み
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 // サーバーとSocket.IOの初期化
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [process.env.HOST_URL],
+    origin: [process.env.HOST_URL, process.env.API_URL],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   },
@@ -32,6 +32,7 @@ app.use(
     origin: (origin, callback) => {
       const allowedOrigins = [process.env.HOST_URL];
       if (!origin || allowedOrigins.includes(origin)) {
+        console.log(process.env.HOST_URL)
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -49,11 +50,6 @@ app.get("/api/orders", async (req, res) => {
     const result = await pool.query(
       "SELECT id, order_number, takoyaki_quantity, takoyaki_price, dessert_takoyaki_quantity, dessert_takoyaki_price, order_date, status, pass_date FROM orders"
     );
-    if (result.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "注文データが見つかりませんでした" });
-    }
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("注文データ取得エラー:", error);
@@ -106,9 +102,7 @@ app.get("/api/orders/:id", async (req, res) => {
     const result = await pool.query("SELECT * FROM orders WHERE id = $1", [
       orderId,
     ]);
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: "注文が見つかりませんでした" });
-    }
+
     res.status(200).json(result.rows[0]);
   } catch (error) {
     console.error("注文取得エラー:", error);
@@ -129,7 +123,7 @@ app.patch("/api/orders/:id", async (req, res) => {
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: "注文が見つかりませんでした" });
+      return res.status(500).json({ error: "注文が見つかりませんでした" });
     }
 
     res.status(200).json(result.rows[0]);
@@ -148,7 +142,7 @@ app.delete("/api/orders/:id", async (req, res) => {
       orderId,
     ]);
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: "注文が見つかりませんでした" });
+      return res.status(500).json({ error: "注文が見つかりませんでした" });
     }
     res.status(200).json({ message: "注文を削除しました" });
     io.emit("orderDeleted", orderId); // 注文削除イベントを送信
@@ -164,6 +158,7 @@ app.get("/api/pricesettings", async (req, res) => {
     const result = await pool.query(
       "SELECT takoyaki_price, dessert_takoyaki_price FROM public.pricesettings"
     );
+    console.log(result)
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("価格設定取得エラー:", error);
@@ -181,7 +176,7 @@ app.patch("/api/pricesettings", async (req, res) => {
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: "価格設定が見つかりませんでした" });
+      return res.status(500).json({ error: "価格設定が見つかりませんでした" });
     }
 
     res.status(200).json(result.rows[0]);

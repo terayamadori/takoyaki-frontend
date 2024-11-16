@@ -76,7 +76,7 @@ export default {
       }
     },
     initializeSocket() {
-      const socket = io(process.env.HOST_URL);
+      const socket = io(process.env.SOCKET_URL);
 
       socket.on("orderUpdated", (updatedOrder) => {
         const index = this.orders.findIndex(
