@@ -1,40 +1,42 @@
-// server.js
-const express = require("express");
-const cors = require("cors"); // CORSミドルウェアのインポート
-const ordersRouter = require("./orders");
+// // server.js
+// const express = require("express");
+// const cors = require("cors"); // CORSミドルウェアのインポート
+// const ordersRouter = require("./orders");
 
-const app = express();
+// dotenv.config(); // 環境変数の読み込み
 
-// CORSの設定（特定のオリジンのみを許可）
-const allowedOrigins = [process.env.HOST_URL, "https://yourfrontenddomain.com"]; // 許可するオリジンを設定
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+// const app = express();
 
-// JSONボディの解析ミドルウェア（express 4.16+ では body-parser は不要）
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// // CORSの設定（特定のオリジンのみを許可）
+// const allowedOrigins = [process.env.HOST_URL, process.env.API_URL]; // 許可するオリジンを設定
+// app.use(
+//   cors({
+//     origin: allowedOrigins,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
 
-// ordersRouterのルーティング設定
-app.use("/api", ordersRouter);
+// // JSONボディの解析ミドルウェア（express 4.16+ では body-parser は不要）
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
-// 404エラーハンドリング
-app.use((req, res) => {
-  res.status(404).json({ error: "API endpoint not found" });
-});
+// // ordersRouterのルーティング設定
+// app.use("/api", ordersRouter);
 
-// サーバーレベルのエラーハンドリング
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong on the server" });
-});
+// // 404エラーハンドリング
+// app.use((req, res) => {
+//   res.status(404).json({ error: "API endpoint not found" });
+// });
 
-// ポート番号の設定
-const PORT = process.env.PORT || 3000; // 環境変数からポートを取得
-app.listen(PORT, () => {
-  console.log(`サーバーがポート ${PORT} で稼働中`);
-});
+// // サーバーレベルのエラーハンドリング
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({ error: "Something went wrong on the server" });
+// });
+
+// // ポート番号の設定
+// const PORT = process.env.PORT || 3000; // 環境変数からポートを取得
+// app.listen(PORT, () => {
+//   console.log(`サーバーがポート ${PORT} で稼働中`);
+// });

@@ -269,7 +269,7 @@ export default {
   methods: {
     initializeSocket() {
       // Socket.IOサーバーに接続
-      this.socket = io(process.env.HOST_URL);
+      this.socket = io(process.env.SOCKET_URL);
 
       // 注文が追加された場合
       this.socket.on("orderAdded", (newOrder) => {

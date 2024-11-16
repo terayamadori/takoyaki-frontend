@@ -1,12 +1,11 @@
 <template>
-  <div>
+  <div class="container">
     <div class="header">
       <h1>売上ページ</h1>
       <button @click="downloadExcel" class="download-button">
         レポート
       </button>
     </div>
-    
     <div v-if="salesData.length">
       <div v-for="(dayData, index) in salesData" :key="index" class="day-sales">
         <h2>{{ dayData.date }}</h2>
@@ -55,8 +54,6 @@
         </div>
       </div>
     </div>
-    
-
     <div v-else>
       <p>売上データがありません。</p>
     </div>

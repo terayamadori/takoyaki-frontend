@@ -15,7 +15,7 @@ const port = 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [process.env.HOST_URL],
+    origin: [process.env.HOST_URL, process.env.API_URL],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   },
@@ -32,6 +32,7 @@ app.use(
     origin: (origin, callback) => {
       const allowedOrigins = [process.env.HOST_URL];
       if (!origin || allowedOrigins.includes(origin)) {
+        console.log(process.env.HOST_URL)
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -164,6 +165,7 @@ app.get("/api/pricesettings", async (req, res) => {
     const result = await pool.query(
       "SELECT takoyaki_price, dessert_takoyaki_price FROM public.pricesettings"
     );
+    console.log(result)
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("価格設定取得エラー:", error);
